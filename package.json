@@ -1,6 +1,6 @@
 {
   "name": "gardr-core-plugin",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "The PluginApi and pluginHandler used for both host and ext side plugin functionality",
   "main": "lib/index.js",
   "scripts": {
