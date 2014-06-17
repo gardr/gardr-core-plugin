@@ -2,8 +2,11 @@
 var pluginHandler = require('../lib/pluginHandler.js');
 var PluginApi     = require('../lib/PluginApi.js');
 
-
 describe('pluginHandler', function () {
+
+    afterEach(function () {
+        pluginHandler._reset();
+    });
 
     describe('register', function () {
         it('should be a method', function () {
@@ -52,7 +55,25 @@ describe('pluginHandler', function () {
             pluginHandler.register(spy);
             pluginHandler.initPlugins(pluginApi);
 
-            expect(spy).to.have.been.calledWithExactly(pluginApi);
+            expect(spy).to.have.been.calledWithExactly(pluginApi, {});
+        });
+
+        it('should pass an empty options object if initPlugins called without options', function (done) {
+            pluginHandler.register(function (pluginApi, options) {
+                expect(options).to.exist;
+                expect(options).to.be.empty;
+                done();
+            });
+            pluginHandler.initPlugins(new PluginApi());
+        });
+
+        it('should pass the options object along if initPlugins called with options', function (done) {
+            var opts = {foo: 'bar'};
+            pluginHandler.register(function (pluginApi, options) {
+                expect(options).to.equal(opts);
+                done();
+            });
+            pluginHandler.initPlugins(new PluginApi(), opts);
         });
 
         it('should remove _reset method from PluginApi before sending it to plugins', function () {
