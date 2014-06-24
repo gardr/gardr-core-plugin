@@ -7,6 +7,9 @@
     "test": "./node_modules/karma/bin/karma start --single-run",
     "watch": "./node_modules/karma/bin/karma start"
   },
+  "homepage": "http://gardr.org",
+  "repository": "https://github.com/gardr/gardr-core-plugin",
+  "bugs": "https://github.com/gardr/gardr-core-plugin/issues",
   "keywords": [
     "gardr",
     "browser"
