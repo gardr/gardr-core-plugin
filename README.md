@@ -18,7 +18,7 @@ This module exposes two objects:
     pluginCore.PluginApi; // the API-object constructor
     pluginCore.pluginHandler; // used to register and initialize plugins
 
-It works by exposing a metod that pass plugins to pluginHandler.register. Then call pluginHandler.initPlugins with a new
+It works by exposing a method that pass plugins to pluginHandler.register. Then call pluginHandler.initPlugins with a new
 instance of PluginApi and the options object (if they need it).
 
     var pluginApi;
