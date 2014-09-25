@@ -1,6 +1,11 @@
 gardr-core-plugin
 =================
 
+[![Build Status](https://api.travis-ci.org/gardr/gardr-core-plugin.png?branch=master)](https://travis-ci.org/gardr/gardr-core-plugin)
+[![Dependency Status](https://david-dm.org/gardr/gardr-core-plugin.png)](https://david-dm.org/gardr/gardr-core-plugin)
+[![devDependency Status](https://david-dm.org/gardr/gardr-core-plugin/dev-status.png)](https://david-dm.org/gardr/gardr-core-plugin#info=devDependencies)
+
+
 The PluginApi and pluginHandler used for both host and ext side plugin functionality. It has no dependencies to Garðr or
 any other libraries.
 
