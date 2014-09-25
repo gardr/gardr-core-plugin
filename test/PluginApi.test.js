@@ -1,9 +1,20 @@
 /*jshint expr: true, nonew: false*/
-var PluginApi = require('../lib/PluginApi.js');
+var PluginApi = require('../lib/PluginApi.js'),
+          xde = require('cross-domain-events'),
+          api;
 
 describe('PluginApi', function () {
 
+    beforeEach(function () {
+        api = new PluginApi();
+    });
+
+    afterEach(function () {
+        api._reset();
+    });
+
     describe('constructor', function () {
+
         it('should not throw if no arguments', function () {
             expect(function () {
                 new PluginApi();
@@ -12,15 +23,6 @@ describe('PluginApi', function () {
     });
 
     describe('events', function () {
-        var api;
-
-        beforeEach(function () {
-            api = new PluginApi();
-        });
-
-        afterEach(function () {
-            api._reset();
-        });
 
         it('should exist', function () {
             expect(api.on).to.exist;
@@ -63,4 +65,38 @@ describe('PluginApi', function () {
             }).not.to.throw();
         });
     });
+
+    describe('reqres', function () {
+
+        describe('end-to-end', function () {
+            var evtName = 'yoer:bar';
+            var reqData = {fooInt : 1337};
+
+            it('should call request.callback with proper params when there is a responder', function (done) {
+                callRespondTo(api, evtName);
+                callRequest(api, evtName, reqData, 1338, done);
+            });
+        });
+    });
 });
+
+
+function callRespondTo (api, evtName) {
+    api.reqres.respondTo(evtName, onXdeCb);
+
+    function onXdeCb (evt, commCb) {
+        var requestData = evt.data;
+        var result = requestData.fooInt + 1;
+        commCb({fooIntResult : result});
+    }
+}
+
+function callRequest (api, evtName, reqData, expectedResult, done) {
+    api.reqres.request(window, evtName, reqData, onXdeCb);
+
+    function onXdeCb (evt) {
+        var responseData = evt.data;
+        expect(responseData.fooIntResult).to.equal(expectedResult);
+        done();
+    }
+}

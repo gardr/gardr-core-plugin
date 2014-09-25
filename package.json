@@ -26,5 +26,8 @@
     "karma": "~0.12.1",
     "karma-browserifast": "~0.4.1",
     "es5-shim": "~2.3.0"
+  },
+  "dependencies": {
+    "cross-domain-events": "0.0.2"
   }
 }
