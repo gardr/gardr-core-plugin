@@ -73,29 +73,37 @@ describe('PluginApi', function () {
             var reqData = {fooInt : 1337};
 
             it('should call request.callback with proper params when there is a responder', function (done) {
-                callRespondTo(api, evtName);
-                callRequest(api, evtName, reqData, 1338, done);
+                callRespondToPostMessage(api, evtName);
+                callPostMessage(api, evtName, reqData, 1338, done);
             });
         });
+
+        describe('errors', function () {
+            it('should catch xde errors', function () {
+                api.postMessage('test:event', {}, function (err) {
+                    expect(err).to.exist;
+                    expect(err.message).to.equal('otherWindow does not support postMessage');
+                }, 'not a window object');
+            });
+        })
     });
 });
 
 
-function callRespondTo (api, evtName) {
-    api.reqres.respondTo(evtName, onXdeCb);
+function callRespondToPostMessage (api, evtName) {
+    api.respondToPostMessage(evtName, onResponseMsg);
 
-    function onXdeCb (evt, commCb) {
-        var requestData = evt.data;
-        var result = requestData.fooInt + 1;
+    function onResponseMsg (responseData, commCb) {
+        var result = responseData.fooInt + 1;
         commCb({fooIntResult : result});
     }
 }
 
-function callRequest (api, evtName, reqData, expectedResult, done) {
-    api.reqres.request(window, evtName, reqData, onXdeCb);
+function callPostMessage (api, evtName, reqData, expectedResult, done) {
+    api.postMessage(evtName, reqData, onXdeCb, window);
 
-    function onXdeCb (evt) {
-        var responseData = evt.data;
+    function onXdeCb (err, responseData) {
+        expect(err).to.be.null;
         expect(responseData.fooIntResult).to.equal(expectedResult);
         done();
     }
